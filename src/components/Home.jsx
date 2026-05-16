@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { getProducts } from '../redux/slices/products'
@@ -7,12 +7,24 @@ const Home = () => {
 
     const {products, loading, error} = useSelector(state => state.Products)
     const dispatch = useDispatch()
-
+    const [input,setInput] = useState("")
+    const [sort, setSort] = useState("")
     useEffect(() => {
         dispatch(getProducts())
     }, [])
 
     if(loading) return <div className="flex justify-center items-center min-h-screen text-xl">Loading...</div>
+
+
+    // //lowhandle function
+    // const lowhandle = ()=>{
+    //     setLow(prev=> !prev)
+    // }
+
+    // //highhandle function
+    // const highhandle = ()=>{
+    //     setHigh(prev=> !prev)
+    // }
 
     return (
         <div className="min-h-screen bg-gray-100 p-8">
@@ -24,8 +36,24 @@ const Home = () => {
                     </Link>
                 </div>
 
+                {/* //search bar */}
+                <input type="text" placeholder='search' value={input} onChange={(e)=> setInput(e.target.value)} />
+               <br/> <br />
+             <select value={sort} onChange={(e) => setSort(e.target.value)}>
+             <option value="">Sort</option>
+             <option value="low">Price: Low to High</option>
+             <option value="high">Price: High to Low</option>
+            </select>
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    {products.map(item => (
+                    {products
+                      .filter(item => item.name.toLowerCase().includes(input.toLowerCase()))
+                      .sort((a, b) => {
+                      if (sort === "low") return a.price - b.price
+                      if (sort === "high") return b.price - a.price
+                      return 0
+                     })
+                    .map(item => (
                         <div key={item._id} className="bg-white rounded-lg shadow-md overflow-hidden">
                             <img
                                 src={`http://localhost:8888/public/productImages/${item.image}`}
