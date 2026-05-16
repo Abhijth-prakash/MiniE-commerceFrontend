@@ -9,22 +9,13 @@ const Home = () => {
     const dispatch = useDispatch()
     const [input,setInput] = useState("")
     const [sort, setSort] = useState("")
+    const [filter, setFilter] = useState("")
     useEffect(() => {
         dispatch(getProducts())
     }, [])
 
     if(loading) return <div className="flex justify-center items-center min-h-screen text-xl">Loading...</div>
 
-
-    // //lowhandle function
-    // const lowhandle = ()=>{
-    //     setLow(prev=> !prev)
-    // }
-
-    // //highhandle function
-    // const highhandle = ()=>{
-    //     setHigh(prev=> !prev)
-    // }
 
     return (
         <div className="min-h-screen bg-gray-100 p-8">
@@ -44,10 +35,20 @@ const Home = () => {
              <option value="low">Price: Low to High</option>
              <option value="high">Price: High to Low</option>
             </select>
+             <select value={filter} onChange={(e) => setFilter(e.target.value)}>
+             <option value="">filter</option>
+             <option value="electronics">Electronics</option>
+             <option value="Clothing">Clothing</option>
+             <option value="Shoes">Shoes</option>
+             <option value="Books">Books</option>
+             <option value="Furniture">Furniture</option>
+             <option value="Toys">Toys</option>
+            </select>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {products
                       .filter(item => item.name.toLowerCase().includes(input.toLowerCase()))
+                      .filter(item => filter ? item.category === filter : true)
                       .sort((a, b) => {
                       if (sort === "low") return a.price - b.price
                       if (sort === "high") return b.price - a.price
