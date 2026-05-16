@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { getProducts } from '../redux/slices/products'
+import { getProducts, setPage } from '../redux/slices/products'
 
 const Home = () => {
 
-    const {products, loading, error} = useSelector(state => state.Products)
+    const {products, loading, error,page,pages} = useSelector(state => state.Products)
     const dispatch = useDispatch()
     const [input,setInput] = useState("")
     const [sort, setSort] = useState("")
     const [filter, setFilter] = useState("")
+    
     useEffect(() => {
-        dispatch(getProducts())
-    }, [])
+        dispatch(getProducts({ page, limit: 6 }))
+    }, [page])
 
     if(loading) return <div className="flex justify-center items-center min-h-screen text-xl">Loading...</div>
 
@@ -114,7 +115,11 @@ return (
                 ))
             }
         </div>
+        <button disabled={page === 1} onClick={() => dispatch(setPage(page - 1))}>Prev</button>
+        <span>{page} of {pages}</span>
+        <button disabled={page === pages} onClick={() => dispatch(setPage(page + 1))}>Next</button>
     </div>
+    
 )
 }
 

@@ -1,17 +1,18 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from 'axios'
 
-export const getProducts =  createAsyncThunk('products/getproducts', 
-    async () => {
-        try{
-    const response = await axios.get('http://localhost:8888')
-    const data = response.data.products
-    return data
-        }catch(error){
+export const getProducts = createAsyncThunk('products/getproducts', 
+    async ({ page = 1, limit = 6 } = {}) => {
+        try {
+            const response = await axios.get('http://localhost:8888', {
+                params: { page, limit }
+            })
+            return response.data  
+        } catch(error) {
             console.log(error)
         }
-
-})
+    }
+)
 
 export const addProducts = createAsyncThunk( 'products/addproducts',
     async (ProductData)=>{
@@ -28,20 +29,29 @@ export const addProducts = createAsyncThunk( 'products/addproducts',
 
 const productSlice = createSlice({
     name:"products",
-    initialState:{
-        products:[],
-        loading: false,
-        error: null
-    },
-    reducers:{},
+   initialState: {
+    products: [],
+    loading: false,
+    error: null,
+    page: 1,
+    pages: 1,
+    total: 0
+},
+    reducers: {
+    setPage: (state, action) => {
+        state.page = action.payload
+    }
+},
     extraReducers: (build)=>{
         build
         .addCase(getProducts.pending,(state)=>{
             state.loading = true
         })
         .addCase(getProducts.fulfilled,(state,action)=>{
-            state.products = action.payload
             state.loading = false
+            state.products = action.payload.products          
+            state.pages = action.payload.pagination.pages    
+            state.total = action.payload.pagination.total     
         })
         .addCase(getProducts.rejected,(state,action)=>{
             state.loading = false
@@ -62,4 +72,5 @@ const productSlice = createSlice({
 })
 
 export default productSlice.reducer
+export const {setPage} = productSlice.actions
 

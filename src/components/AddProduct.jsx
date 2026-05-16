@@ -42,7 +42,7 @@ const AddProduct = () => {
                         className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600"
                     >
                         <option value="">Select Category</option>
-                        <option value="electronics">Electronics</option>
+                        <option value="Electronics">Electronics</option>
                         <option value="Clothing">Clothing</option>
                         <option value="Shoes">Shoes</option>
                         <option value="Books">Books</option>
