@@ -11,21 +11,27 @@ const Home = () => {
     const [sort, setSort] = useState("")
     const [filter, setFilter] = useState("")
     const inputref = useRef(null)
+    const isFirstRender = useRef(true)
     
 
     //getting product data on inital rendering and when users clicks next or prev page
     useEffect(() => {
-        dispatch(getProducts({ page, limit: 6 }))
+        dispatch(getProducts({ page, limit: 6,filter }))
     }, [page])
-
-    //debouncing in search
+    
+    // useEffect 2 — search and filter with debounce
     useEffect(() => {
-        const timer = setTimeout(() => {
-            dispatch(getProducts({ page: 1, limit: 6, search: input }))
-            inputref.current?.focus()
-        }, 300)
-        return () => clearTimeout(timer)
-    }, [input])
+    if(isFirstRender.current) {
+        isFirstRender.current = false
+        return
+    }
+    const timer = setTimeout(() => {
+        dispatch(getProducts({ page: 1, limit: 6, search: input, filter }))
+        inputref.current?.focus()
+    }, 300)
+    return () => clearTimeout(timer)
+   }, [input, filter])
+
 
     return (
         <div className="min-h-screen bg-[#f7f5f2]">
@@ -104,7 +110,6 @@ const Home = () => {
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 p-6">
                         {products
                             .filter(item => item.name.toLowerCase().includes(input.toLowerCase()))
-                            .filter(item => filter ? item.category === filter : true)
                             .sort((a, b) => {
                                 if (sort === "low") return a.price - b.price
                                 if (sort === "high") return b.price - a.price
