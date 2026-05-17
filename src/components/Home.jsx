@@ -18,7 +18,7 @@ const Home = () => {
     useEffect(() => {
         dispatch(getProducts({ page, limit: 6,filter }))
     }, [page])
-    
+
     // useEffect 2 — search and filter with debounce
     useEffect(() => {
     if(isFirstRender.current) {
@@ -26,11 +26,11 @@ const Home = () => {
         return
     }
     const timer = setTimeout(() => {
-        dispatch(getProducts({ page: 1, limit: 6, search: input, filter }))
+        dispatch(getProducts({ page: 1, limit: 6, search: input, filter,sort }))
         inputref.current?.focus()
     }, 300)
     return () => clearTimeout(timer)
-   }, [input, filter])
+   }, [input, filter,sort])
 
 
     return (
@@ -110,11 +110,6 @@ const Home = () => {
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 p-6">
                         {products
                             .filter(item => item.name.toLowerCase().includes(input.toLowerCase()))
-                            .sort((a, b) => {
-                                if (sort === "low") return a.price - b.price
-                                if (sort === "high") return b.price - a.price
-                                return 0
-                            })
                             .map(item => (
                                 <div key={item._id} className="bg-white rounded-xl border border-[#ede9e3] overflow-hidden cursor-pointer group hover:-translate-y-1 hover:shadow-xl transition-all duration-200">
                                     <div className="h-48 bg-[#f7f5f2] flex items-center justify-center overflow-hidden relative p-4">

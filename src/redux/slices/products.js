@@ -2,10 +2,10 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from 'axios'
 
 export const getProducts = createAsyncThunk('products/getproducts', 
-    async ({ page = 1, limit = 6 ,search ="",filter="" } = {}) => {
+    async ({ page = 1, limit = 6 ,search ="",filter="",sort="" } = {}) => {
         try {
             const response = await axios.get('http://localhost:8888', {
-                params: { page, limit ,search, filter }
+                params: { page, limit ,search, filter,sort }
             })
             return response.data  
         } catch(error) {
