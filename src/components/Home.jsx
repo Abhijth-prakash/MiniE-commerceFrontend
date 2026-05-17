@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { getProducts, setPage } from '../redux/slices/products'
+const baseURL = import.meta.env.VITE_API_BASE
 
 const Home = () => {
 
@@ -114,7 +115,7 @@ const Home = () => {
                                 <div key={item._id} className="bg-white rounded-xl border border-[#ede9e3] overflow-hidden cursor-pointer group hover:-translate-y-1 hover:shadow-xl transition-all duration-200">
                                     <div className="h-48 bg-[#f7f5f2] flex items-center justify-center overflow-hidden relative p-4">
                                         <img
-                                            src={`http://localhost:8888/public/productImages/${item.image}`}
+                                            src={`${baseURL}/public/productImages/${item.image}`}
                                             alt={item.name}
                                             className="h-full w-full object-contain group-hover:scale-105 transition-transform duration-300"
                                         />

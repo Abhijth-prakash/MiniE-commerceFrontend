@@ -1,10 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from 'axios'
+const baseURL = import.meta.env.VITE_API_BASE
 
 export const getProducts = createAsyncThunk('products/getproducts', 
     async ({ page = 1, limit = 6 ,search ="",filter="",sort="" } = {}) => {
         try {
-            const response = await axios.get('http://localhost:8888', {
+            const response = await axios.get(baseURL, {
                 params: { page, limit ,search, filter,sort }
             })
             return response.data  
@@ -17,7 +18,7 @@ export const getProducts = createAsyncThunk('products/getproducts',
 export const addProducts = createAsyncThunk( 'products/addproducts',
     async (ProductData)=>{
         try{
-            const response = await axios.post('http://localhost:8888/add',ProductData)
+            const response = await axios.post(`${baseURL}/add`,ProductData)
             const data = response.data.product
             return data
         }catch(error){
