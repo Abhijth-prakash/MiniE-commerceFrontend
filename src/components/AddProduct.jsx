@@ -3,12 +3,18 @@ import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import { addProducts } from '../redux/slices/products'
 import { useNavigate } from 'react-router-dom'
+import {schema} from '../schema/schema'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 const AddProduct = () => {
-    const {register, handleSubmit} = useForm()
+    const {register, handleSubmit,formState} = useForm({
+        resolver:zodResolver(schema)
+    })
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const {errors} =formState
 
+    //sending data to backend 
     const dataHandle = (data) => {
         const formData = new FormData()
         formData.append('name', data.name)
@@ -31,12 +37,14 @@ const AddProduct = () => {
                         placeholder="Product Name"
                         className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
+                    {errors.name && <p className="text-red-500 text-xs">{errors.name.message}</p>}
                     <input
                         type="text"
                         {...register("price")}
                         placeholder="Price"
                         className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
+                    {errors.price && <p className="text-red-500 text-xs">{errors.price.message}</p>}
                     <select
                         {...register("category")}
                         className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600"
@@ -49,11 +57,13 @@ const AddProduct = () => {
                         <option value="Furniture">Furniture</option>
                         <option value="Toys">Toys</option>
                     </select>
+                   {errors.category && <p className="text-red-500 text-xs">{errors.category.message}</p>}
                     <input
                         type="file"
                         {...register("image")}
                         className="border border-gray-300 rounded-md px-4 py-2 text-gray-600"
                     />
+                    {errors.image && <p className="text-red-500 text-xs">{errors.image.message}</p>}
                     <button
                         type="submit"
                         className="bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-200 font-semibold"
