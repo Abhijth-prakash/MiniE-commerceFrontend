@@ -1,6 +1,5 @@
 import React, { useEffect,useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
 import { getProducts, setPage } from '../redux/slices/products'
 import Navbar from '../components/Navbar'
 import Pagination from '../components/Pagination'
