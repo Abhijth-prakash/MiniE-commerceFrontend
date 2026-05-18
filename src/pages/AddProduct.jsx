@@ -5,6 +5,8 @@ import { addProducts } from '../redux/slices/products'
 import { useNavigate } from 'react-router-dom'
 import {schema} from '../schema/schema'
 import { zodResolver } from '@hookform/resolvers/zod'
+import Navbar from '../components/Navbar'
+
 
 const AddProduct = () => {
     const {register, handleSubmit,formState} = useForm({
@@ -26,7 +28,9 @@ const AddProduct = () => {
     }
 
     return (
+        
         <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+           
             <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
                 <h2 className="text-2xl font-bold mb-6 text-gray-800">Add Product</h2>
 

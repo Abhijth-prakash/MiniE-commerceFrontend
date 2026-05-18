@@ -30,17 +30,21 @@ export const addProducts = createAsyncThunk( 'products/addproducts',
 
 const productSlice = createSlice({
     name:"products",
-   initialState: {
+    initialState: {
     products: [],
     loading: false,
     error: null,
     page: 1,
     pages: 1,
-    total: 0
+    total: 0,
+    search:""
 },
     reducers: {
     setPage: (state, action) => {
         state.page = action.payload
+    },
+    setSearch:(state,action)=>{
+        state.search = (action.payload)
     }
 },
     extraReducers: (build)=>{
@@ -73,5 +77,5 @@ const productSlice = createSlice({
 })
 
 export default productSlice.reducer
-export const {setPage} = productSlice.actions
+export const {setPage,setSearch} = productSlice.actions
 
