@@ -1,80 +1,120 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { addProducts } from '../redux/slices/products'
 import { useNavigate } from 'react-router-dom'
 import {schema} from '../schema/schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Navbar from '../components/Navbar'
 
-
 const AddProduct = () => {
-    const {register, handleSubmit,formState} = useForm({
-        resolver:zodResolver(schema)
+    const {register, handleSubmit, formState} = useForm({
+        resolver: zodResolver(schema)
     })
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const {errors} =formState
+    const {errors} = formState
+    const { error } = useSelector(state => state.Products)
 
-    //sending data to backend 
-    const dataHandle = (data) => {
+    const  dataHandle = async (data) => {
         const formData = new FormData()
         formData.append('name', data.name)
         formData.append('price', data.price)
         formData.append('category', data.category)
         formData.append('image', data.image[0])
-        dispatch(addProducts(formData))
+        const result = await dispatch(addProducts(formData)) 
+        if(!result.error) {
         navigate('/')
+    }
     }
 
     return (
-        
-        <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-           
-            <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-                <h2 className="text-2xl font-bold mb-6 text-gray-800">Add Product</h2>
+        <div className="min-h-screen bg-[#f7f5f2]">
+            <Navbar />
 
-                <form onSubmit={handleSubmit(dataHandle)} className="flex flex-col gap-4">
-                    <input
-                        type="text"
-                        {...register("name")}
-                        placeholder="Product Name"
-                        className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                    {errors.name && <p className="text-red-500 text-xs">{errors.name.message}</p>}
-                    <input
-                        type="text"
-                        {...register("price")}
-                        placeholder="Price"
-                        className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                    {errors.price && <p className="text-red-500 text-xs">{errors.price.message}</p>}
-                    <select
-                        {...register("category")}
-                        className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600"
-                    >
-                        <option value="">Select Category</option>
-                        <option value="Electronics">Electronics</option>
-                        <option value="Clothing">Clothing</option>
-                        <option value="Shoes">Shoes</option>
-                        <option value="Books">Books</option>
-                        <option value="Furniture">Furniture</option>
-                        <option value="Toys">Toys</option>
-                    </select>
-                   {errors.category && <p className="text-red-500 text-xs">{errors.category.message}</p>}
-                    <input
-                        type="file"
-                        {...register("image")}
-                        className="border border-gray-300 rounded-md px-4 py-2 text-gray-600"
-                    />
-                    {errors.image && <p className="text-red-500 text-xs">{errors.image.message}</p>}
-                    <button
-                        type="submit"
-                        className="bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-200 font-semibold"
-                    >
-                        Submit
-                    </button>
-                </form>
+            <div className="flex items-center justify-center py-12 px-4">
+                <div className="bg-white rounded-xl border border-[#ede9e3] shadow-sm w-full max-w-md p-8">
+                    
+                    {/* Header */}
+                    <div className="mb-8">
+                        <h2 className="text-2xl font-bold text-[#1a1a2e]">Add Product</h2>
+                        <p className="text-sm text-gray-400 mt-1">Fill in the details to list a new product</p>
+                    </div>
+
+                    <form onSubmit={handleSubmit(dataHandle)} className="flex flex-col gap-5">
+                        
+                        {/* Name */}
+                        <div className="flex flex-col gap-1">
+                            <label className="text-xs font-medium text-[#1a1a2e] uppercase tracking-wide">Product Name</label>
+                            <input
+                                type="text"
+                                {...register("name")}
+                                placeholder="e.g. Wireless Headphones"
+                                className="border border-[#ede9e3] rounded-lg px-4 py-2.5 text-sm text-[#1a1a2e] outline-none focus:border-[#1a1a2e] transition placeholder-gray-300"
+                            />
+                            {errors.name && <p className="text-red-400 text-xs">{errors.name.message}</p>}
+                        </div>
+
+                        {/* Price */}
+                        <div className="flex flex-col gap-1">
+                            <label className="text-xs font-medium text-[#1a1a2e] uppercase tracking-wide">Price (₹)</label>
+                            <input
+                                type="text"
+                                {...register("price")}
+                                placeholder="e.g. 1299"
+                                className="border border-[#ede9e3] rounded-lg px-4 py-2.5 text-sm text-[#1a1a2e] outline-none focus:border-[#1a1a2e] transition placeholder-gray-300"
+                            />
+                            {errors.price && <p className="text-red-400 text-xs">{errors.price.message}</p>}
+                        </div>
+
+                        {/* Category */}
+                        <div className="flex flex-col gap-1">
+                            <label className="text-xs font-medium text-[#1a1a2e] uppercase tracking-wide">Category</label>
+                            <select
+                                {...register("category")}
+                                className="border border-[#ede9e3] rounded-lg px-4 py-2.5 text-sm text-[#1a1a2e] outline-none focus:border-[#1a1a2e] transition bg-white"
+                            >
+                                <option value="">Select Category</option>
+                                <option value="Electronics">Electronics</option>
+                                <option value="Clothing">Clothing</option>
+                                <option value="Shoes">Shoes</option>
+                                <option value="Books">Books</option>
+                                <option value="Furniture">Furniture</option>
+                                <option value="Toys">Toys</option>
+                            </select>
+                            {errors.category && <p className="text-red-400 text-xs">{errors.category.message}</p>}
+                        </div>
+
+                        {/* Image */}
+                        <div className="flex flex-col gap-1">
+                            <label className="text-xs font-medium text-[#1a1a2e] uppercase tracking-wide">Product Image</label>
+                            <input
+                                type="file"
+                                {...register("image")}
+                                className="border border-[#ede9e3] rounded-lg px-4 py-2.5 text-sm text-gray-400 outline-none focus:border-[#1a1a2e] transition file:mr-3 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-medium file:bg-[#1a1a2e] file:text-[#ffd200] cursor-pointer"
+                            />
+                            {errors.image && <p className="text-red-400 text-xs">{errors.image.message}</p>}
+                        </div>
+
+                        {/* Buttons */}
+                        <div className="flex gap-3 mt-2">
+                            <button
+                                type="button"
+                                onClick={() => navigate('/')}
+                                className="flex-1 py-2.5 rounded-full text-sm font-medium border border-[#1a1a2e] text-[#1a1a2e] hover:bg-[#1a1a2e] hover:text-[#ffd200] transition"
+                            >
+                                ← Cancel
+                            </button>
+                            <button
+                                type="submit"
+                                className="flex-1 py-2.5 rounded-full text-sm font-bold bg-[#1a1a2e] text-[#ffd200] hover:opacity-90 transition"
+                            >
+                                Add Product
+                            </button>
+                        </div>
+                            {error && <p className="text-red-400 text-xs text-center mt-2">{error}</p>} 
+                    </form>
+                </div>
             </div>
         </div>
     )

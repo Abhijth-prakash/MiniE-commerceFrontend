@@ -3,26 +3,26 @@ import axios from 'axios'
 const baseURL = import.meta.env.VITE_API_BASE
 
 export const getProducts = createAsyncThunk('products/getproducts', 
-    async ({ page = 1, limit = 6 ,search ="",filter="",sort="" } = {}) => {
+    async ({ page = 1, limit = 6, search = "", filter = "", sort = "" } = {}, { rejectWithValue }) => {
         try {
             const response = await axios.get(baseURL, {
                 params: { page, limit ,search, filter,sort }
             })
             return response.data  
         } catch(error) {
-            console.log(error)
+            return rejectWithValue(error.response.data.message)
         }
     }
 )
 
 export const addProducts = createAsyncThunk( 'products/addproducts',
-    async (ProductData)=>{
+    async (ProductData,{rejectWithValue})=>{
         try{
             const response = await axios.post(`${baseURL}/add`,ProductData)
             const data = response.data.product
             return data
         }catch(error){
-            console.log(error)
+            return rejectWithValue(error.response.data.message)
         }
         
     }
@@ -71,7 +71,7 @@ const productSlice = createSlice({
         })
         .addCase(addProducts.rejected,(state,action)=>{
             state.loading = false
-            state.error = action.error.message
+            state.error = action.payload
         })
     }
 })
