@@ -6,6 +6,8 @@ import Pagination from '../components/Pagination'
 import ProductCard from '../components/ProductCard'
 import Registration from './Registration'
 import { Link } from 'react-router-dom'
+import Loading from '../components/Loading'
+import Noproductfound from '../components/Noproductfound'
 const baseURL = import.meta.env.VITE_API_BASE
 
 const Home = () => {
@@ -71,15 +73,13 @@ const Home = () => {
 
             {/* Loading / Grid */}
        {loading ? (
-    <div className="flex justify-center items-center h-96 text-xl text-[#1a1a2e]">
-        Loading...
-    </div>
+        <>
+        <Loading></Loading>
+        </>
 ) : products.length === 0 ? (
-    <div className="flex flex-col items-center justify-center h-64 text-gray-400">
-        <p className="text-4xl mb-3">🔍</p>
-        <p className="text-lg font-medium">No products found</p>
-        <p className="text-sm mt-1">Try a different search or filter</p>
-    </div>
+        <>
+        <Noproductfound></Noproductfound>
+        </>
 ) : (
     <>
             <ProductCard></ProductCard>
