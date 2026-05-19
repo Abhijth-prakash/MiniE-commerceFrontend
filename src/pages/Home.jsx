@@ -4,6 +4,8 @@ import { getProducts, setPage } from '../redux/slices/products'
 import Navbar from '../components/Navbar'
 import Pagination from '../components/Pagination'
 import ProductCard from '../components/ProductCard'
+import Registration from './Registration'
+import { Link } from 'react-router-dom'
 const baseURL = import.meta.env.VITE_API_BASE
 
 const Home = () => {
@@ -82,6 +84,7 @@ const Home = () => {
     <>
             <ProductCard></ProductCard>
             <Pagination></Pagination>
+            <Link to={'/registration'}>registration</Link>
     </>
 )}
         </div>
