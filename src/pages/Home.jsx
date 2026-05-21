@@ -4,7 +4,6 @@ import { getProducts, setPage } from '../redux/slices/products'
 import Navbar from '../components/Navbar'
 import Pagination from '../components/Pagination'
 import ProductCard from '../components/ProductCard'
-import Registration from './Registration'
 import { Link } from 'react-router-dom'
 import Loading from '../components/Loading'
 import Noproductfound from '../components/Noproductfound'
@@ -84,7 +83,7 @@ const Home = () => {
     <>
             <ProductCard></ProductCard>
             <Pagination></Pagination>
-            <Link to={'/registration'}>registration</Link>
+            <Link to={'/register'}>registration</Link>
     </>
 )}
         </div>
