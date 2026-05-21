@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { addProducts } from '../redux/slices/products'
 import { useNavigate } from 'react-router-dom'
-import {schema} from '../schema/schema'
+import {schema} from '../schema/productSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Navbar from '../components/Navbar'
 
