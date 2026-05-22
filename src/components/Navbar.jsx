@@ -1,18 +1,35 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setSearch } from '../redux/slices/products'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { logoutUser, userProfile } from '../redux/slices/userSlice'
 
 const Navbar = () => {
     const dispatch = useDispatch()
     const search = useSelector(state => state.Products.search)
     const [searchOpen, setSearchOpen] = useState(false)
     const { user, isAdmin } = useSelector(state => state.Users)
+    const navigate = useNavigate()
 
+    //handle searching
     const searchHandle = (e) => {
         dispatch(setSearch(e.target.value))
     }
 
+    //getting user details on every mounting
+useEffect(() => {
+    if (!user) {
+        dispatch(userProfile())
+    }
+}, [])
+
+    //logout user
+    const logout = async () => {
+        const result = await dispatch(logoutUser())
+        if (!result.error) {
+            navigate('/')
+        }
+    }
 
     return (
         <div>
@@ -85,6 +102,21 @@ const Navbar = () => {
                             </svg>
                             <span className="hidden sm:inline">Cart</span>
                         </Link>
+                    )}
+
+                    {/* Logout button */}
+                    {user && (
+                        <button
+                            onClick={logout}
+                            className="flex items-center gap-1.5 border border-white/20 text-white/70 hover:text-white hover:border-white/50 text-xs md:text-sm px-3 md:px-4 py-2 rounded-full transition-all duration-200 whitespace-nowrap"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                                <polyline points="16 17 21 12 16 7"/>
+                                <line x1="21" y1="12" x2="9" y2="12"/>
+                            </svg>
+                            <span className="hidden sm:inline">Logout</span>
+                        </button>
                     )}
                 </div>
             </nav>

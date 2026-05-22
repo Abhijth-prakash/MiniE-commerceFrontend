@@ -1,6 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from 'axios'
 const baseURL = import.meta.env.VITE_API_BASE
+axios.defaults.withCredentials = true
+
+
 
 export const getProducts = createAsyncThunk('products/getproducts', 
     async ({ page = 1, limit = 6, search = "", filter = "", sort = "" } = {}, { rejectWithValue }) => {
@@ -10,7 +13,7 @@ export const getProducts = createAsyncThunk('products/getproducts',
             })
             return response.data  
         } catch(error) {
-            return rejectWithValue(error.response.data.message)
+            return rejectWithValue(error.response?.data?.message || "Something went wrong")
         }
     }
 )
@@ -22,7 +25,7 @@ export const addProducts = createAsyncThunk( 'products/addproducts',
             const data = response.data.product
             return data
         }catch(error){
-            return rejectWithValue(error.response.data.message)
+            return rejectWithValue(error.response?.data?.message || "Something went wrong")
         }
         
     }
@@ -60,7 +63,7 @@ const productSlice = createSlice({
         })
         .addCase(getProducts.rejected,(state,action)=>{
             state.loading = false
-            state.error = action.error.message
+            state.error = action.payload
         })
         .addCase(addProducts.pending,(state)=>{
             state.loading =  true
