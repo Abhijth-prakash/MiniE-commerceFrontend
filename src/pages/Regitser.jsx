@@ -2,15 +2,23 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { registerSchema } from '../schema/userSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { registerUser } from '../redux/slices/userSlice'
 
 const Registration = () => {
     const {register,handleSubmit,formState} = useForm({
         resolver:zodResolver(registerSchema)
     })
     const {errors} = formState
-    const datahandle =(data)=>{
-        console.log(data)
+    const error = useSelector(state=> state.Users.error)
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const datahandle = async (data)=>{
+        const result = await dispatch(registerUser(data))
+        if(!result.error){
+            navigate('/')
+        }
     }
 
 
@@ -32,8 +40,8 @@ const Registration = () => {
           </button>
         </form>
       </div>
-
-      <Link to={'/login'}>Login</Link>
+     {error && <p className="text-red-400 text-xs text-center mt-2">{error}</p>} 
+      <Link to={'/'}>Login</Link>
     </div>
   )
 }

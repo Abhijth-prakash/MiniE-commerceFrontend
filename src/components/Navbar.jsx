@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setSearch } from '../redux/slices/products'
 import { Link } from 'react-router-dom'
@@ -7,10 +7,12 @@ const Navbar = () => {
     const dispatch = useDispatch()
     const search = useSelector(state => state.Products.search)
     const [searchOpen, setSearchOpen] = useState(false)
-    const {user,isAdmin} = useSelector(state=> state.Users)
+    const { user, isAdmin } = useSelector(state => state.Users)
+
     const searchHandle = (e) => {
         dispatch(setSearch(e.target.value))
     }
+
 
     return (
         <div>
@@ -46,7 +48,8 @@ const Navbar = () => {
                 </div>
 
                 {/* Right side */}
-                <div className="ml-auto flex items-center gap-2">
+                <div className="ml-auto flex items-center gap-3">
+
                     {/* Search icon — mobile only */}
                     <button
                         onClick={() => setSearchOpen(!searchOpen)}
@@ -56,23 +59,33 @@ const Navbar = () => {
                             <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
                         </svg>
                     </button>
-                {user?<p>Hi, {user.name}</p>:<p>Hi,user</p>}
 
-            {isAdmin?  <Link
-                        to="/add"
-                        className="bg-[#ffd200] text-[#1a1a2e] font-bold text-xs md:text-sm px-3 md:px-5 py-2 rounded-full hover:opacity-90 transition whitespace-nowrap"
-                    >
-                        <span className="hidden sm:inline">+ Add Product</span>
-                        <span className="sm:hidden">+</span>
-                    </Link>:  <Link
-                        to="/add"
-                        className="bg-[#ffd200] text-[#1a1a2e] font-bold text-xs md:text-sm px-3 md:px-5 py-2 rounded-full hover:opacity-90 transition whitespace-nowrap"
-                    >
-                        <span className="hidden sm:inline"> cart</span>
-                        <span className="sm:hidden">+</span>
-                    </Link>}
-                   
-                  
+                    {/* Greeting */}
+                    <span className="text-white/70 text-sm hidden sm:block">
+                        Hi, <span className="text-white font-medium">{user ? user.name : "Guest"}</span>
+                    </span>
+
+                    {/* Action button */}
+                    {isAdmin ? (
+                        <Link
+                            to="/add"
+                            className="bg-[#ffd200] text-[#1a1a2e] font-bold text-xs md:text-sm px-3 md:px-5 py-2 rounded-full hover:opacity-90 transition whitespace-nowrap"
+                        >
+                            <span className="hidden sm:inline">+ Add Product</span>
+                            <span className="sm:hidden">+</span>
+                        </Link>
+                    ) : (
+                        <Link
+                            to="/cart"
+                            className="flex items-center gap-2 bg-[#ffd200] text-[#1a1a2e] font-bold text-xs md:text-sm px-3 md:px-5 py-2 rounded-full hover:opacity-90 transition whitespace-nowrap"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                            </svg>
+                            <span className="hidden sm:inline">Cart</span>
+                        </Link>
+                    )}
                 </div>
             </nav>
 
