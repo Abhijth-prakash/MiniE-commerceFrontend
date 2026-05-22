@@ -7,7 +7,7 @@ const Navbar = () => {
     const dispatch = useDispatch()
     const search = useSelector(state => state.Products.search)
     const [searchOpen, setSearchOpen] = useState(false)
-
+    const {user,isAdmin} = useSelector(state=> state.Users)
     const searchHandle = (e) => {
         dispatch(setSearch(e.target.value))
     }
@@ -56,14 +56,23 @@ const Navbar = () => {
                             <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
                         </svg>
                     </button>
+                {user?<p>Hi, {user.name}</p>:<p>Hi,user</p>}
 
-                    <Link
+            {isAdmin?  <Link
                         to="/add"
                         className="bg-[#ffd200] text-[#1a1a2e] font-bold text-xs md:text-sm px-3 md:px-5 py-2 rounded-full hover:opacity-90 transition whitespace-nowrap"
                     >
                         <span className="hidden sm:inline">+ Add Product</span>
                         <span className="sm:hidden">+</span>
-                    </Link>
+                    </Link>:  <Link
+                        to="/add"
+                        className="bg-[#ffd200] text-[#1a1a2e] font-bold text-xs md:text-sm px-3 md:px-5 py-2 rounded-full hover:opacity-90 transition whitespace-nowrap"
+                    >
+                        <span className="hidden sm:inline"> cart</span>
+                        <span className="sm:hidden">+</span>
+                    </Link>}
+                   
+                  
                 </div>
             </nav>
 
