@@ -1,4 +1,3 @@
-// schema/userSchema.js (registration)
 import { z } from 'zod'
 
 export const registerSchema = z.object({
