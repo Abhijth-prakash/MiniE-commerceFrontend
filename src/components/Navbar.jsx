@@ -16,12 +16,6 @@ const Navbar = () => {
         dispatch(setSearch(e.target.value))
     }
 
-    //getting user details on every mounting
-useEffect(() => {
-    if (!user) {
-        dispatch(userProfile())
-    }
-}, [])
 
     //logout user
     const logout = async () => {

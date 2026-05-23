@@ -64,7 +64,7 @@ const userSlice = createSlice({
     initialState:{
         user:null,
         isAdmin:false,
-        loading:false,
+        loading:true,
         error:null,
     },
     reducers:{},

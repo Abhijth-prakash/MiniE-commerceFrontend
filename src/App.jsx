@@ -5,20 +5,37 @@ import Navbar from './components/Navbar'
 import Registration from './pages/Regitser'
 import NotFound404 from './pages/NotFound404'
 import Login from './pages/Login'
+import ProtectedRoutes from './utils/ProtectedRoutes'
+import { lazy, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { userProfile } from './redux/slices/userSlice'
 
 
 function App() {
+
+  const dispatch = useDispatch()
  
+    //getting user details on every mounting
+useEffect(() => {
+        dispatch(userProfile())
+}, [])
+
+
+
 
   return (
     <>
     <Routes>
       <Route path='/' element={<Login></Login>}></Route>
-      <Route path='/home' element={<Home></Home>}></Route>
-      <Route path='/add' element={<AddProduct></AddProduct>}></Route>
       <Route path='/register' element={<Registration></Registration>}></Route>
-      <Route path='/login' element={<Login></Login>}></Route>
-      <Route path='*' element={<NotFound404></NotFound404>}></Route>
+
+    {/* Protected routes */}
+      <Route element={<ProtectedRoutes />}>
+      <Route path='/home' element={<Home />} />
+      <Route path='/add' element={<AddProduct />} />
+      <Route path='*' element={<NotFound404 />} />
+      </Route>
+
     </Routes>
     </>
   )

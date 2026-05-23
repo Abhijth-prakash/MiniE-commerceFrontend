@@ -35,16 +35,24 @@ const productSlice = createSlice({
     name:"products",
     initialState: {
     products: [],
-    loading: false,
+    loading: true,
     error: null,
     page: 1,
     pages: 1,
     total: 0,
-    search:""
+    search:"",
+    sort:"",
+    filter:"",
 },
     reducers: {
     setPage: (state, action) => {
         state.page = action.payload
+    },
+    setSort: (state, action) => {
+        state.sort = action.payload
+    },
+    setFilter: (state, action) => {
+        state.filter = action.payload
     },
     setSearch:(state,action)=>{
         state.search = (action.payload)
@@ -80,5 +88,5 @@ const productSlice = createSlice({
 })
 
 export default productSlice.reducer
-export const {setPage,setSearch} = productSlice.actions
+export const {setPage,setSearch,setSort,setFilter} = productSlice.actions
 

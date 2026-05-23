@@ -1,9 +1,9 @@
-import React, { useEffect,useRef, useState } from 'react'
+import React, { lazy, Suspense, useEffect,useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getProducts, setPage } from '../redux/slices/products'
+import { getProducts, setFilter, setPage, setSort } from '../redux/slices/products'
 import Navbar from '../components/Navbar'
 import Pagination from '../components/Pagination'
-import ProductCard from '../components/ProductCard'
+const ProductCard = lazy(()=> import('../components/ProductCard'))
 import { Link } from 'react-router-dom'
 import Loading from '../components/Loading'
 import Noproductfound from '../components/Noproductfound'
@@ -11,30 +11,29 @@ const baseURL = import.meta.env.VITE_API_BASE
 
 const Home = () => {
 
-    const {products, loading, error, page, pages,search} = useSelector(state => state.Products)
+    const {products, loading, error, page, pages,search,sort,filter} = useSelector(state => state.Products)
     const dispatch = useDispatch()
-    const [sort, setSort] = useState("")
-    const [filter, setFilter] = useState("")
-    const isFirstRender = useRef(true)
-    
 
-    //getting product data on inital rendering and when users clicks next or prev page
-    useEffect(() => {
-        dispatch(getProducts({ page, limit: 6,filter }))
-    }, [page])
 
-    // useEffect 2 — search and filter with debounce
-    useEffect(() => {
-    if(isFirstRender.current) {
-        isFirstRender.current = false
-        return
-    }
+    //getting products on the inital render and when page limit search filter sort change
+useEffect(() => {
     const timer = setTimeout(() => {
-        dispatch(getProducts({ page: 1, limit: 6, search, filter,sort }))
+        dispatch(
+            getProducts({
+                page,
+                limit: 6,
+                search,
+                filter,
+                sort
+            })
+        )
+
     }, 300)
+
     return () => clearTimeout(timer)
-   }, [search, filter,sort])
-   
+
+}, [page, search, filter, sort])
+
 
     return (
         <div className="min-h-screen bg-[#f7f5f2]">
@@ -46,7 +45,7 @@ const Home = () => {
                 {["", "Electronics", "Clothing", "Shoes", "Books", "Furniture", "Toys"].map(cat => (
                     <button
                         key={cat}
-                        onClick={() => setFilter(cat)}
+                        onClick={() => dispatch(setFilter(cat))}
                         className={`px-4 py-1.5 rounded-full text-xs border transition whitespace-nowrap font-medium
                             ${filter === cat
                                 ? "bg-[#1a1a2e] text-[#ffd200] border-[#1a1a2e]"
@@ -60,7 +59,7 @@ const Home = () => {
                     <span className="text-xs text-gray-400">Sort</span>
                     <select
                         value={sort}
-                        onChange={(e) => setSort(e.target.value)}
+                        onChange={(e) => dispatch(setSort(e.target.value))}
                         className="border border-gray-200 rounded-full px-3 py-1.5 text-xs outline-none bg-white"
                     >
                         <option value="">Relevance</option>
@@ -80,8 +79,9 @@ const Home = () => {
         <Noproductfound></Noproductfound>
         </>
 ) : (
-    <>
+    <>      <Suspense fallback={<Loading></Loading>}>
             <ProductCard></ProductCard>
+            </Suspense>
             <Pagination></Pagination>
             <Link to={'/register'}>registration</Link>
     </>
