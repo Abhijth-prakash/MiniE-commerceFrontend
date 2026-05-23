@@ -21,7 +21,7 @@ const Navbar = () => {
     const logout = async () => {
         const result = await dispatch(logoutUser())
         if (!result.error) {
-            navigate('/')
+            navigate("/", { replace: true })
         }
     }
 
