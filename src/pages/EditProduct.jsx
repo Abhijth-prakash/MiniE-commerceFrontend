@@ -2,10 +2,10 @@ import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
-import { schema } from '../schema/productSchema'
+import { editSchema, schema } from '../schema/productSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Navbar from '../components/Navbar'
-import { getProducts } from '../redux/slices/products'
+import { getProducts, updateProducts } from '../redux/slices/products'
 const baseURL = import.meta.env.VITE_API_BASE
 
 const EditProduct = () => {
@@ -19,7 +19,7 @@ const EditProduct = () => {
     },[])
     const product = products.find(item => item._id === id)
     const { register, handleSubmit, formState, watch,reset } = useForm({
-        resolver: zodResolver(schema),
+        resolver: zodResolver(editSchema),
         defaultValues: {
         name: "",
         price: "",
@@ -27,12 +27,13 @@ const EditProduct = () => {
 }
     })
 
-       useEffect(() => {
-    if(product){
+useEffect(() => {
+    if (product) {
         reset({
             name: product.name,
             price: product.price,
             category: product.category,
+            image: undefined
         })
     }
 }, [product, reset])
@@ -45,15 +46,20 @@ const EditProduct = () => {
         ? URL.createObjectURL(imageurl[0])
         : `${baseURL}/public/productImages/${product?.image}`
 
-    const dataHandle = async (data) => {
-        const formData = new FormData()
-        formData.append('name', data.name)
-        formData.append('price', data.price)
-        formData.append('category', data.category)
+const dataHandle = async (data) => {
+    const formData = new FormData()
+    formData.append('name', data.name)
+    formData.append('price', data.price)
+    formData.append('category', data.category)
+    if (data.image && data.image[0]) {
         formData.append('image', data.image[0])
-        formData.append('id', id)
-        console.log(formData)
     }
+
+    const result = await dispatch(updateProducts({ ProductData: formData, id }))
+    if (!result.error) {
+        navigate('/home')
+    }
+}
 
     return (
         <div className="min-h-screen bg-[#f7f5f2]">

@@ -45,6 +45,18 @@ export const deleteProducts = createAsyncThunk('products/deleteproducts',
     }
 )
 
+//upadting products
+export const updateProducts = createAsyncThunk('products/updateproducts',
+    async ( {ProductData,id} , { rejectWithValue }) => {
+        try {
+            const response = await axios.patch(`${baseURL}/product?id=${id}`,ProductData)
+            return response.data.product
+        } catch (error) {
+            return rejectWithValue(error.response?.data?.message || "Something went wrong")
+        }
+    }
+)
+
 const productSlice = createSlice({
     name:"products",
     initialState: {
