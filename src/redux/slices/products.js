@@ -4,7 +4,7 @@ const baseURL = import.meta.env.VITE_API_BASE
 axios.defaults.withCredentials = true
 
 
-
+//geting producs
 export const getProducts = createAsyncThunk('products/getproducts', 
     async ({ page = 1, limit = 6, search = "", filter = "", sort = "" } = {}, { rejectWithValue }) => {
         try {
@@ -18,6 +18,7 @@ export const getProducts = createAsyncThunk('products/getproducts',
     }
 )
 
+//adding products
 export const addProducts = createAsyncThunk( 'products/addproducts',
     async (ProductData,{rejectWithValue})=>{
         try{
@@ -28,6 +29,19 @@ export const addProducts = createAsyncThunk( 'products/addproducts',
             return rejectWithValue(error.response?.data?.message || "Something went wrong")
         }
         
+    }
+)
+
+
+//deleting products
+export const deleteProducts = createAsyncThunk('products/deleteproducts',
+    async (id, { rejectWithValue }) => {
+        try {
+            const response = await axios.delete(`${baseURL}/product?id=${id}`)
+            return response.data.product
+        } catch (error) {
+            return rejectWithValue(error.response?.data?.message || "Something went wrong")
+        }
     }
 )
 
@@ -43,6 +57,7 @@ const productSlice = createSlice({
     search:"",
     sort:"",
     filter:"",
+    prevstate:[]
 },
     reducers: {
     setPage: (state, action) => {
@@ -83,6 +98,21 @@ const productSlice = createSlice({
         .addCase(addProducts.rejected,(state,action)=>{
             state.loading = false
             state.error = action.payload
+        })
+        .addCase(deleteProducts.pending,(state,action)=>{
+            const id = action.meta.arg
+            state.prevstate = state.products
+            state.products = state.products.filter(item=> item._id !== id)
+            state.loading =  true
+        })
+        .addCase(deleteProducts.fulfilled,(state,action)=>{
+            state.loading = false
+            state.products = action.payload
+        })
+        .addCase(deleteProducts.rejected,(state,action)=>{
+            state.loading = false
+            state.error = action.payload
+            state.products = state.prevstate
         })
     }
 })
