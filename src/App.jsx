@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { userProfile } from './redux/slices/userSlice'
 import EditProduct from './pages/EditProduct'
 import DeleteProduct from './pages/DeleteProduct'
+import AdminRoutes from './utils/AdminRoutes'
 
 
 function App() {
@@ -34,10 +35,15 @@ useEffect(() => {
     {/* Protected routes */}
       <Route element={<ProtectedRoutes />}>
       <Route path='/home' element={<Home />} />
+      </Route>
+
+      {/* AdminRoutes */}
+      <Route element={<AdminRoutes />}>
       <Route path='/product/add' element={<AddProduct />} />
       <Route path='/product/:id/edit' element={<EditProduct />} />
       <Route path='/product/:id/delete' element={<DeleteProduct />} />
       </Route>
+
       <Route path='*' element={<NotFound404 />} />
     </Routes>
     </>

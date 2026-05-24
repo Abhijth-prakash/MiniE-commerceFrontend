@@ -83,7 +83,6 @@ useEffect(() => {
             <ProductCard></ProductCard>
             </Suspense>
             <Pagination></Pagination>
-            <Link to={'/register'}>registration</Link>
     </>
 )}
         </div>

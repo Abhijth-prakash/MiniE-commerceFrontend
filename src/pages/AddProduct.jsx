@@ -8,24 +8,29 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import Navbar from '../components/Navbar'
 
 const AddProduct = () => {
-    const {register, handleSubmit, formState} = useForm({
+    const {register, handleSubmit, formState, watch} = useForm({
         resolver: zodResolver(schema)
     })
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const {errors} = formState
     const { error } = useSelector(state => state.Products)
+    const imageFile = watch("image")
+    const previewImage =
+    imageFile && imageFile.length > 0
+    ? URL.createObjectURL(imageFile[0])
+    : null
 
-    const  dataHandle = async (data) => {
+    const dataHandle = async (data) => {
         const formData = new FormData()
         formData.append('name', data.name)
         formData.append('price', data.price)
         formData.append('category', data.category)
         formData.append('image', data.image[0])
-        const result = await dispatch(addProducts(formData)) 
-        if(!result.error) {
-        navigate('/home')
-    }
+        const result = await dispatch(addProducts(formData))
+        if (!result.error) {
+            navigate('/home')
+        }
     }
 
     return (
@@ -34,7 +39,7 @@ const AddProduct = () => {
 
             <div className="flex items-center justify-center py-12 px-4">
                 <div className="bg-white rounded-xl border border-[#ede9e3] shadow-sm w-full max-w-md p-8">
-                    
+
                     {/* Header */}
                     <div className="mb-8">
                         <h2 className="text-2xl font-bold text-[#1a1a2e]">Add Product</h2>
@@ -42,7 +47,7 @@ const AddProduct = () => {
                     </div>
 
                     <form onSubmit={handleSubmit(dataHandle)} className="flex flex-col gap-5">
-                        
+
                         {/* Name */}
                         <div className="flex flex-col gap-1">
                             <label className="text-xs font-medium text-[#1a1a2e] uppercase tracking-wide">Product Name</label>
@@ -88,11 +93,33 @@ const AddProduct = () => {
                         {/* Image */}
                         <div className="flex flex-col gap-1">
                             <label className="text-xs font-medium text-[#1a1a2e] uppercase tracking-wide">Product Image</label>
-                            <input
-                                type="file"
-                                {...register("image")}
-                                className="border border-[#ede9e3] rounded-lg px-4 py-2.5 text-sm text-gray-400 outline-none focus:border-[#1a1a2e] transition file:mr-3 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-medium file:bg-[#1a1a2e] file:text-[#ffd200] cursor-pointer"
-                            />
+
+                            <div className="flex items-center gap-4">
+
+                                {/* Preview */}
+                                <div className="w-20 h-20 rounded-xl border border-[#ede9e3] bg-[#f7f5f2] flex items-center justify-center overflow-hidden shrink-0">
+                                    {previewImage ? (
+                                        <img
+                                            src={previewImage}
+                                            alt="preview"
+                                            className="w-full h-full object-contain"
+                                        />
+                                    ) : (
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                                            <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+                                            <polyline points="21 15 16 10 5 21"/>
+                                        </svg>
+                                    )}
+                                </div>
+
+                                {/* File input */}
+                                <input
+                                    type="file"
+                                    {...register("image")}
+                                    className="flex-1 border border-[#ede9e3] rounded-lg px-4 py-2.5 text-sm text-gray-400 outline-none focus:border-[#1a1a2e] transition file:mr-3 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-medium file:bg-[#1a1a2e] file:text-[#ffd200] cursor-pointer"
+                                />
+                            </div>
+
                             {errors.image && <p className="text-red-400 text-xs">{errors.image.message}</p>}
                         </div>
 
@@ -100,7 +127,7 @@ const AddProduct = () => {
                         <div className="flex gap-3 mt-2">
                             <button
                                 type="button"
-                                onClick={() => navigate('/')}
+                                onClick={() => navigate('/home')}
                                 className="flex-1 py-2.5 rounded-full text-sm font-medium border border-[#1a1a2e] text-[#1a1a2e] hover:bg-[#1a1a2e] hover:text-[#ffd200] transition"
                             >
                                 ← Cancel
@@ -112,7 +139,7 @@ const AddProduct = () => {
                                 Add Product
                             </button>
                         </div>
-                            {error && <p className="text-red-400 text-xs text-center mt-2">{error}</p>} 
+                        {error && <p className="text-red-400 text-xs text-center mt-2">{error}</p>}
                     </form>
                 </div>
             </div>
