@@ -24,7 +24,7 @@ const AddProduct = () => {
         formData.append('image', data.image[0])
         const result = await dispatch(addProducts(formData)) 
         if(!result.error) {
-        navigate('/')
+        navigate('/home')
     }
     }
 

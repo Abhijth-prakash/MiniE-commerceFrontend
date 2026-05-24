@@ -9,6 +9,8 @@ import ProtectedRoutes from './utils/ProtectedRoutes'
 import { lazy, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { userProfile } from './redux/slices/userSlice'
+import EditProduct from './pages/EditProduct'
+import DeleteProduct from './pages/DeleteProduct'
 
 
 function App() {
@@ -32,10 +34,11 @@ useEffect(() => {
     {/* Protected routes */}
       <Route element={<ProtectedRoutes />}>
       <Route path='/home' element={<Home />} />
-      <Route path='/add' element={<AddProduct />} />
-      <Route path='*' element={<NotFound404 />} />
+      <Route path='/product/add' element={<AddProduct />} />
+      <Route path='/product/:id/edit' element={<EditProduct />} />
+      <Route path='/product/:id/delete' element={<DeleteProduct />} />
       </Route>
-
+      <Route path='*' element={<NotFound404 />} />
     </Routes>
     </>
   )

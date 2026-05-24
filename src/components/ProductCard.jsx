@@ -1,5 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
+import DeleteProduct from '../pages/DeleteProduct'
 const baseURL = import.meta.env.VITE_API_BASE
 
 const ProductCard = () => {
@@ -7,11 +9,20 @@ const ProductCard = () => {
     const { isAdmin } = useSelector(state => state.Users)
     const searchText = search.toLowerCase()
     const filtered = products.filter(item => item.name.toLowerCase().includes(searchText))
+    const [remove, setRemove] = useState(false)
+    const [id, setId] = useState()
+
+    const deleteModal = (id) => {
+        setRemove(true)
+        setId(id)
+    }
 
     // ── ADMIN VIEW ──────────────────────────────────────────────────────────
     if (isAdmin) {
         return (
             <div className="p-6">
+                {remove && <DeleteProduct id={id} remove={remove} setRemove={setRemove} />}
+
                 <div className="mb-4 flex items-center justify-between">
                     <p className="text-xs font-semibold text-[#1a1a2e]/40 uppercase tracking-widest">
                         {filtered.length} product{filtered.length !== 1 ? 's' : ''}
@@ -49,14 +60,17 @@ const ProductCard = () => {
 
                             {/* Actions */}
                             <div className="flex items-center gap-2 shrink-0">
-                                <button className="flex items-center gap-1.5 text-xs font-semibold text-[#1a1a2e]/60 hover:text-[#1a1a2e] border border-[#ede9e3] hover:border-[#1a1a2e]/30 px-3 py-1.5 rounded-full transition-all duration-150">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                                    </svg>
-                                    Edit
-                                </button>
-                                <button className="flex items-center gap-1.5 text-xs font-semibold text-red-400 hover:text-white hover:bg-red-500 border border-red-200 hover:border-red-500 px-3 py-1.5 rounded-full transition-all duration-150">
+                                <Link to={`/product/${item._id}/edit`}>
+                                    <button className="flex items-center gap-1.5 text-xs font-semibold text-[#1a1a2e]/60 hover:text-[#1a1a2e] border border-[#ede9e3] hover:border-[#1a1a2e]/30 px-3 py-1.5 rounded-full transition-all duration-150">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                        </svg>
+                                        Edit
+                                    </button>
+                                </Link>
+
+                                <button onClick={() => deleteModal(item._id)} className="flex items-center gap-1.5 text-xs font-semibold text-red-400 hover:text-white hover:bg-red-500 border border-red-200 hover:border-red-500 px-3 py-1.5 rounded-full transition-all duration-150">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                                         <polyline points="3 6 5 6 21 6"/>
                                         <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>

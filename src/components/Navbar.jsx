@@ -79,7 +79,7 @@ const Navbar = () => {
                     {/* Action button */}
                     {isAdmin ? (
                         <Link
-                            to="/add"
+                            to="/product/add"
                             className="bg-[#ffd200] text-[#1a1a2e] font-bold text-xs md:text-sm px-3 md:px-5 py-2 rounded-full hover:opacity-90 transition whitespace-nowrap"
                         >
                             <span className="hidden sm:inline">+ Add Product</span>

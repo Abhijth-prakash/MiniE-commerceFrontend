@@ -92,6 +92,7 @@ const userSlice = createSlice({
             const {user} = action.payload
             state.user= user
             state.isAdmin = user.admin === true
+            state.error = null
         })
         .addCase(loginUser.rejected,(state,action)=>{
             state.loading = false
@@ -109,7 +110,8 @@ const userSlice = createSlice({
         })
         .addCase(userProfile.rejected,(state,action)=>{
             state.loading = false
-            state.error = action.payload
+            state.user = null
+            state.isAdmin = false
         })
         .addCase(logoutUser.pending,(state,action)=>{
             state.loading = true
