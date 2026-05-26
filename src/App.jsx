@@ -12,6 +12,7 @@ import { userProfile } from './redux/slices/userSlice'
 import EditProduct from './pages/EditProduct'
 import DeleteProduct from './pages/DeleteProduct'
 import AdminRoutes from './utils/AdminRoutes'
+import Cart from './pages/Cart'
 
 
 function App() {
@@ -35,6 +36,7 @@ useEffect(() => {
     {/* Protected routes */}
       <Route element={<ProtectedRoutes />}>
       <Route path='/home' element={<Home />} />
+      <Route path='/product/cart' element={<Cart />} />
       </Route>
 
       {/* AdminRoutes */}

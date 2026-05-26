@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
 import DeleteProduct from '../pages/DeleteProduct'
+import { addtocart } from '../redux/slices/cartSlice'
 const baseURL = import.meta.env.VITE_API_BASE
 
 const ProductCard = () => {
@@ -12,9 +13,19 @@ const ProductCard = () => {
     const [remove, setRemove] = useState(false)
     const [id, setId] = useState()
 
+    const dispatch = useDispatch() 
+    const navigate = useNavigate()
     const deleteModal = (id) => {
         setRemove(true)
         setId(id)
+    }
+
+    const cartHandle = (productId)=>{
+        console.log(productId)
+        const result = dispatch(addtocart(productId))
+        if(!result.error){
+            navigate('/product/cart')
+        }
     }
 
     // ── ADMIN VIEW ──────────────────────────────────────────────────────────
@@ -119,9 +130,11 @@ const ProductCard = () => {
 
                     {/* Add to cart */}
                     <div className="px-3 pb-3">
-                        <button className="w-full bg-[#1a1a2e] text-[#ffd200] text-xs font-bold py-2 rounded-lg hover:bg-[#ffd200] hover:text-[#1a1a2e] transition-all duration-200 cursor-pointer">
+                       
+                        <button onClick={()=> cartHandle(item._id)} className="w-full bg-[#1a1a2e] text-[#ffd200] text-xs font-bold py-2 rounded-lg hover:bg-[#ffd200] hover:text-[#1a1a2e] transition-all duration-200 cursor-pointer">
                             Add to Cart
                         </button>
+
                     </div>
                 </div>
             ))}
