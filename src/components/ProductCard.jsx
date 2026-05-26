@@ -12,6 +12,7 @@ const ProductCard = () => {
     const filtered = products.filter(item => item.name.toLowerCase().includes(searchText))
     const [remove, setRemove] = useState(false)
     const [id, setId] = useState()
+    const { cartItems } = useSelector(state => state.cart)
 
     const dispatch = useDispatch() 
     const navigate = useNavigate()
@@ -20,9 +21,9 @@ const ProductCard = () => {
         setId(id)
     }
 
-    const cartHandle = (productId)=>{
-        console.log(productId)
-        const result = dispatch(addtocart(productId))
+    const cartHandle = async (productId)=>{
+        let quantity = 1
+        const result = dispatch(addtocart({productId:productId,quantity:quantity}))
         if(!result.error){
             navigate('/product/cart')
         }

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { deleteCart, getCart } from '../redux/slices/cartSlice'
+import { addtocart, deleteCart, getCart, updatingQt } from '../redux/slices/cartSlice'
 const baseURL = import.meta.env.VITE_API_BASE
 
 const Cart = () => {
@@ -15,6 +15,20 @@ const Cart = () => {
          dispatch(deleteCart({productId}))
   }
 
+const decreasequantity = (quantity, productId) => {
+    dispatch(updatingQt({
+        productId,
+        quantity: quantity - 1
+    }))
+}
+
+const increasequantity = (quantity, productId) => {
+    dispatch(updatingQt({
+        productId,
+        quantity: quantity + 1
+    }))
+}
+  
   return (
     <div className="grid grid-cols-1 sm:grid-cols-[1fr_300px] gap-6 p-4 sm:p-6">
 
@@ -54,9 +68,9 @@ const Cart = () => {
                   ₹{item.product.price.toLocaleString('en-IN')}
                 </span>
                 <div className="flex items-center gap-2 bg-gray-100 rounded-full px-3 py-1">
-                  <button className="text-gray-500 hover:text-[#1a1a2e] text-sm">−</button>
+                  <button disabled={item.quantity === 1} onClick={()=> decreasequantity(item.quantity,item.product._id)  } className="text-gray-500 hover:text-[#1a1a2e] text-sm">−</button>
                   <span className="text-sm font-medium text-[#1a1a2e] min-w-3.5 text-center">{item.quantity}</span>
-                  <button className="text-gray-500 hover:text-[#1a1a2e] text-sm">+</button>
+                  <button onClick={()=> increasequantity(item.quantity,item.product._id)} className="text-gray-500 hover:text-[#1a1a2e] text-sm">+</button>
                 </div>
                <button onClick={()=> deletehandle(item.product._id)} className="text-gray-300 hover:text-red-500 transition-colors">
                   <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

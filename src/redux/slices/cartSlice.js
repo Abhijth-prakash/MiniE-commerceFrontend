@@ -6,10 +6,9 @@ axios.defaults.withCredentials = true
 
 //addintg to cart
 export const addtocart =  createAsyncThunk("products/addtocart",
-    async (productId,{rejectWithValue})=>{
+    async ({productId,quantity},{rejectWithValue})=>{
         try{
-            const response = await axios.post(`${baseURL}/product/cart`, { productId })  
-            console.log(response)
+            const response = await axios.post(`${baseURL}/product/cart`, { productId,quantity })  
         }catch(error){
             return rejectWithValue(error.response?.data?.message || "Something went wrong")
         }
@@ -31,7 +30,6 @@ export const getCart = createAsyncThunk("products/getCart",
 )
 
 //deleting products from cart
-
 export const deleteCart = createAsyncThunk("products/deleteCart",
     async ({productId},{rejectWithValue})=>{
         try{
@@ -43,6 +41,26 @@ export const deleteCart = createAsyncThunk("products/deleteCart",
         }
     }
 )
+
+//updating qt
+export const updatingQt = createAsyncThunk(
+    'products/updatingQt',
+    async ({ productId, quantity }, { rejectWithValue }) => {
+        try {
+            const response = await axios.patch(
+                `${baseURL}/product/cart`,
+                { productId, quantity }
+            )
+
+            return response.data.product
+        } catch (error) {
+            return rejectWithValue(
+                error.response?.data?.message || "Something went wrong"
+            )
+        }
+    }
+)
+
     
 
 const cartSlice = createSlice({
@@ -50,8 +68,10 @@ const cartSlice = createSlice({
     initialState:{
         cartItems:[],
         loading:false,
-        error:null
-    },reducers:{},
+        error:null,
+    },reducers:{
+
+    },
     extraReducers:(build)=>{
          build
          .addCase(addtocart.pending,(state,action)=>{
@@ -92,7 +112,21 @@ const cartSlice = createSlice({
             state.loading= false
             state.error = action.payload
          })
+         .addCase(updatingQt.pending,(state,action)=>{
+            state.loading = true
+            state.error = null
+         })
+         .addCase(updatingQt.fulfilled,(state,action)=>{
+            state.loading = false
+            state.cartItems = action.payload
+            state.error = null
+         })
+         .addCase(updatingQt.rejected,(state,action)=>{
+            state.loading= false
+            state.error = action.payload
+         })
     }
 })
+
 
 export default cartSlice.reducer
