@@ -61,6 +61,23 @@ export const updatingQt = createAsyncThunk(
     }
 )
 
+export const orderPlace = createAsyncThunk(
+    'products/orderPlace',
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await axios.delete(
+                `${baseURL}/product/cart/dispatch`
+            )
+
+            return response.data.product
+        } catch (error) {
+            return rejectWithValue(
+                error.response?.data?.message || "Something went wrong"
+            )
+        }
+    }
+)
+
     
 
 const cartSlice = createSlice({
@@ -70,7 +87,9 @@ const cartSlice = createSlice({
         loading:false,
         error:null,
     },reducers:{
-
+        clearCart:(state,action)=>{
+            state.cartItems = []
+        }
     },
     extraReducers:(build)=>{
          build
@@ -125,8 +144,20 @@ const cartSlice = createSlice({
             state.loading= false
             state.error = action.payload
          })
+         .addCase(orderPlace.pending,(state,action)=>{
+            state.loading = true
+            state.error = null
+         })
+         .addCase(orderPlace.fulfilled,(state,action)=>{
+            state.loading = false
+            state.error = null
+         })
+         .addCase(orderPlace.rejected,(state,action)=>{
+            state.loading= false
+            state.error = action.payload
+         })
     }
 })
 
-
+export const {clearCart} = cartSlice.actions
 export default cartSlice.reducer

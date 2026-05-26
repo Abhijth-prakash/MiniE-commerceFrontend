@@ -14,6 +14,7 @@ import DeleteProduct from './pages/DeleteProduct'
 import AdminRoutes from './utils/AdminRoutes'
 import Cart from './pages/Cart'
 import { getCart } from './redux/slices/cartSlice'
+import Checkout from './pages/Checkout'
 
 
 function App() {
@@ -41,6 +42,7 @@ useEffect(() => {
       <Route element={<ProtectedRoutes />}>
       <Route path='/home' element={<Home />} />
       <Route path='/product/cart' element={<Cart />} />
+      <Route path='/product/cart/checkout' element={<Checkout />} />
       </Route>
 
       {/* AdminRoutes */}

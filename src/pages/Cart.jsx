@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addtocart, deleteCart, getCart, updatingQt } from '../redux/slices/cartSlice'
+import { addtocart, clearCart, deleteCart, getCart, orderPlace, updatingQt } from '../redux/slices/cartSlice'
+import { useNavigate } from 'react-router-dom'
 const baseURL = import.meta.env.VITE_API_BASE
 
 const Cart = () => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const { cartItems } = useSelector(state => state.cart)
 
   useEffect(() => { dispatch(getCart()) }, [])
@@ -27,6 +29,15 @@ const increasequantity = (quantity, productId) => {
         productId,
         quantity: quantity + 1
     }))
+}
+
+const checkout = async ()=>{
+    const result = await dispatch(orderPlace())
+    if(!result.error){
+        dispatch(clearCart())
+        navigate('/product/cart/checkout')
+    }
+
 }
   
   return (
@@ -104,7 +115,7 @@ const increasequantity = (quantity, productId) => {
             <span>Total</span>
             <span>₹{subtotal.toLocaleString('en-IN')}</span>
           </div>
-          <button className="w-full bg-[#1a1a2e] text-[#ffd200] font-bold text-sm py-3 rounded-lg mt-4 hover:opacity-85 transition-opacity">
+          <button onClick={checkout} className="w-full bg-[#1a1a2e] text-[#ffd200] font-bold text-sm py-3 rounded-lg mt-4 hover:opacity-85 transition-opacity">
             Proceed to checkout →
           </button>
         </div>
