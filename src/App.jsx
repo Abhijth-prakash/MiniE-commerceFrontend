@@ -13,15 +13,19 @@ import EditProduct from './pages/EditProduct'
 import DeleteProduct from './pages/DeleteProduct'
 import AdminRoutes from './utils/AdminRoutes'
 import Cart from './pages/Cart'
+import { getCart } from './redux/slices/cartSlice'
 
 
 function App() {
 
   const dispatch = useDispatch()
+  const { cartItems } = useSelector(state => state.cart)
+  
  
     //getting user details on every mounting
 useEffect(() => {
         dispatch(userProfile())
+        dispatch(getCart())
 }, [])
 
 

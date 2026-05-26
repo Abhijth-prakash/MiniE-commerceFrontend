@@ -10,7 +10,7 @@ const Navbar = () => {
     const [searchOpen, setSearchOpen] = useState(false)
     const { user, isAdmin } = useSelector(state => state.Users)
     const navigate = useNavigate()
-
+    const { cartItems } = useSelector(state => state.cart)
     //handle searching
     const searchHandle = (e) => {
         dispatch(setSearch(e.target.value))
@@ -86,16 +86,19 @@ const Navbar = () => {
                             <span className="sm:hidden">+</span>
                         </Link>
                     ) : (
-                        <Link
-                            to="/product/cart"
-                            className="flex items-center gap-2 bg-[#ffd200] text-[#1a1a2e] font-bold text-xs md:text-sm px-3 md:px-5 py-2 rounded-full hover:opacity-90 transition whitespace-nowrap"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-                            </svg>
-                            <span className="hidden sm:inline">Cart</span>
-                        </Link>
+                       <Link
+  to="/product/cart"
+  className="flex items-center gap-2 bg-[#1a1a2e] text-[#ffd200] text-sm font-semibold px-4 py-2 rounded-full hover:opacity-85 transition-opacity"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+  </svg>
+  Cart
+  <span className="bg-[#ffd200] text-[#1a1a2e] text-xs font-bold min-w-5 h-5 rounded-full flex items-center justify-center px-1">
+    {cartItems.length}
+  </span>
+</Link>
                     )}
 
                     {/* Logout button */}
