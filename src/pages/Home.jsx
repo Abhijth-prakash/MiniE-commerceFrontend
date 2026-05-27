@@ -36,6 +36,8 @@ useEffect(() => {
 }, [page, search, filter, sort])
 
 
+
+
     return (
         <div className="min-h-screen bg-[#f7f5f2]">
              <Toaster position="top-right" />

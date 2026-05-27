@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setSearch } from '../redux/slices/products'
 import { Link, useNavigate } from 'react-router-dom'
 import { logoutUser, userProfile } from '../redux/slices/userSlice'
+import { getCart } from '../redux/slices/cartSlice'
 
 const Navbar = () => {
     const dispatch = useDispatch()

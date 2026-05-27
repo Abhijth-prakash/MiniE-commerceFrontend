@@ -13,48 +13,41 @@ import EditProduct from './pages/EditProduct'
 import DeleteProduct from './pages/DeleteProduct'
 import AdminRoutes from './utils/AdminRoutes'
 import Cart from './pages/Cart'
-import { getCart } from './redux/slices/cartSlice'
 import Checkout from './pages/Checkout'
+import ErrorBoundary from './ErrorBoundary/Errorboundary'
+import { getCart } from './redux/slices/cartSlice'
 
 
 function App() {
 
   const dispatch = useDispatch()
   const { cartItems } = useSelector(state => state.cart)
-  
- 
-    //getting user details on every mounting
-useEffect(() => {
-        dispatch(userProfile())
-        dispatch(getCart())
-}, [])
-
 
 
 
   return (
-    <>
-    <Routes>
-      <Route path='/' element={<Login></Login>}></Route>
-      <Route path='/register' element={<Registration></Registration>}></Route>
+    <ErrorBoundary>
+      <Routes>
+        <Route path='/' element={<Login />} />
+        <Route path='/register' element={<Registration />} />
 
-    {/* Protected routes */}
-      <Route element={<ProtectedRoutes />}>
-      <Route path='/home' element={<Home />} />
-      <Route path='/product/cart' element={<Cart />} />
-      <Route path='/product/cart/checkout' element={<Checkout />} />
-      </Route>
+        {/* Protected routes */}
+        <Route element={<ProtectedRoutes />}>
+          <Route path='/home' element={<Home />} />
+          <Route path='/product/cart' element={<Cart />} />
+          <Route path='/product/cart/checkout' element={<Checkout />} />
+        </Route>
 
-      {/* AdminRoutes */}
-      <Route element={<AdminRoutes />}>
-      <Route path='/product/add' element={<AddProduct />} />
-      <Route path='/product/:id/edit' element={<EditProduct />} />
-      <Route path='/product/:id/delete' element={<DeleteProduct />} />
-      </Route>
+        {/* Admin routes */}
+        <Route element={<AdminRoutes />}>
+          <Route path='/product/add' element={<AddProduct />} />
+          <Route path='/product/:id/edit' element={<EditProduct />} />
+          <Route path='/product/:id/delete' element={<DeleteProduct />} />
+        </Route>
 
-      <Route path='*' element={<NotFound404 />} />
-    </Routes>
-    </>
+        <Route path='*' element={<NotFound404 />} />
+      </Routes>
+    </ErrorBoundary>
   )
 }
 
