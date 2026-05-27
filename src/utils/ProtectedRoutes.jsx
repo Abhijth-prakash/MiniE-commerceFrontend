@@ -4,10 +4,11 @@ import { Navigate, Outlet } from 'react-router-dom'
 
 
 const ProtectedRoutes = () => {
-    const {user,loading} = useSelector(state=>state.Users)
+    const { user, loading } = useSelector(state => state.Users)
 
     if (loading) return null
-  return user? <Outlet></Outlet> : <Navigate to={'/'}></Navigate>
+    if (!user) return <Navigate to="/" replace />
+    return <Outlet />
 }
 
 export default ProtectedRoutes

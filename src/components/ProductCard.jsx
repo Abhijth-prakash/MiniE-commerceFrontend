@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import DeleteProduct from '../pages/DeleteProduct'
-import { addtocart } from '../redux/slices/cartSlice'
+import { addtocart, getCart } from '../redux/slices/cartSlice'
 const baseURL = import.meta.env.VITE_API_BASE
+import toast from 'react-hot-toast'
+
 
 const ProductCard = () => {
     const { products, search } = useSelector(state => state.Products)
@@ -21,13 +23,16 @@ const ProductCard = () => {
         setId(id)
     }
 
-    const cartHandle = async (productId)=>{
-        let quantity = 1
-        const result = dispatch(addtocart({productId:productId,quantity:quantity}))
-        if(!result.error){
-            navigate('/product/cart')
-        }
+const cartHandle = async (productId) => {
+    let quantity = 1
+    const result = await dispatch(addtocart({ productId: productId, quantity: quantity }))
+    if (!result.error) {
+        toast.success('Added to cart!')
+        await dispatch(getCart())  
+    } else {
+        toast.error('Failed to add to cart.')
     }
+}
 
     // ── ADMIN VIEW ──────────────────────────────────────────────────────────
     if (isAdmin) {

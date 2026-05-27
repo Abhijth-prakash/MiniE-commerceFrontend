@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom'
 import Loading from '../components/Loading'
 import Noproductfound from '../components/Noproductfound'
 const baseURL = import.meta.env.VITE_API_BASE
+import { Toaster } from 'react-hot-toast'
 
 const Home = () => {
 
@@ -37,7 +38,7 @@ useEffect(() => {
 
     return (
         <div className="min-h-screen bg-[#f7f5f2]">
-
+             <Toaster position="top-right" />
          <Navbar></Navbar>
 
             {/* Filter chips + Sort — always mounted */}

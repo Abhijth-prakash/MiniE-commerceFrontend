@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addtocart, clearCart, deleteCart, getCart, orderPlace, updatingQt } from '../redux/slices/cartSlice'
 import { useNavigate } from 'react-router-dom'
+import toast, { Toaster } from 'react-hot-toast'
 const baseURL = import.meta.env.VITE_API_BASE
 
 const Cart = () => {
@@ -14,7 +15,8 @@ const Cart = () => {
   const subtotal = cartItems && cartItems.reduce((acc, item) => acc + item.product.price * item.quantity, 0) 
 
   const deletehandle = (productId)=>{
-         dispatch(deleteCart({productId}))
+    dispatch(deleteCart({productId}))
+    toast.success('Item removed from cart')
   }
 
 const decreasequantity = (quantity, productId) => {
@@ -34,14 +36,17 @@ const increasequantity = (quantity, productId) => {
 const checkout = async ()=>{
     const result = await dispatch(orderPlace())
     if(!result.error){
+        toast.success('Order placed successfully!')
         dispatch(clearCart())
-        navigate('/product/cart/checkout')
+        setTimeout(() => navigate('/product/cart/checkout'), 1500)
+    } else {
+        toast.error('Failed to place order. Please try again.')
     }
-
 }
   
   return (
     <div className="grid grid-cols-1 sm:grid-cols-[1fr_300px] gap-6 p-4 sm:p-6">
+      <Toaster position="top-right" />
 
       {/* Cart Items */}
       <div className="order-2 sm:order-1">

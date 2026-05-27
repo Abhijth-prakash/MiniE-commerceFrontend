@@ -9,6 +9,7 @@ export const addtocart =  createAsyncThunk("products/addtocart",
     async ({productId,quantity},{rejectWithValue})=>{
         try{
             const response = await axios.post(`${baseURL}/product/cart`, { productId,quantity })  
+            return response.data
         }catch(error){
             return rejectWithValue(error.response?.data?.message || "Something went wrong")
         }

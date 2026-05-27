@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import {schema} from '../schema/productSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Navbar from '../components/Navbar'
+import toast, { Toaster } from 'react-hot-toast'
 
 const AddProduct = () => {
     const {register, handleSubmit, formState, watch} = useForm({
@@ -21,20 +22,24 @@ const AddProduct = () => {
     ? URL.createObjectURL(imageFile[0])
     : null
 
-    const dataHandle = async (data) => {
-        const formData = new FormData()
-        formData.append('name', data.name)
-        formData.append('price', data.price)
-        formData.append('category', data.category)
-        formData.append('image', data.image[0])
-        const result = await dispatch(addProducts(formData))
-        if (!result.error) {
-            navigate('/home')
-        }
+const dataHandle = async (data) => {
+    const formData = new FormData()
+    formData.append('name', data.name)
+    formData.append('price', data.price)
+    formData.append('category', data.category)
+    formData.append('image', data.image[0])
+    const result = await dispatch(addProducts(formData))
+    if (!result.error) {
+        toast.success('Product added successfully!')
+        setTimeout(() => navigate('/home'), 1500) 
+    } else {
+        toast.error(result.payload || 'Failed to add product.')
     }
+}
 
     return (
         <div className="min-h-screen bg-[#f7f5f2]">
+            <Toaster position="top-right" />
             <Navbar />
 
             <div className="flex items-center justify-center py-12 px-4">
