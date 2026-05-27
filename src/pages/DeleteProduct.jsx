@@ -2,6 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteProducts } from '../redux/slices/products'
 const baseURL = import.meta.env.VITE_API_BASE
+import toast from 'react-hot-toast'
 
 const DeleteProduct = ({ id, setRemove }) => {
   const { products } = useSelector(state => state.Products)
@@ -9,11 +10,11 @@ const DeleteProduct = ({ id, setRemove }) => {
 
   const product = products.find(item => item._id === id)
 
-  const deletehandle = (id) => {
+const deletehandle = (id) => {
     dispatch(deleteProducts(id))
+    toast.success('Product deleted successfully')
     setRemove(false)
-  }
-
+}
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center px-4 z-50">
       <div className="bg-white rounded-2xl border border-[#ede9e3] p-8 w-full max-w-md">

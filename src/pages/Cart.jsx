@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addtocart, clearCart, deleteCart, getCart, orderPlace, updatingQt } from '../redux/slices/cartSlice'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import toast, { Toaster } from 'react-hot-toast'
 const baseURL = import.meta.env.VITE_API_BASE
 
@@ -12,38 +12,35 @@ const Cart = () => {
 
   useEffect(() => { dispatch(getCart()) }, [])
 
-  const subtotal = cartItems && cartItems.reduce((acc, item) => acc + item.product.price * item.quantity, 0) 
+  const subtotal = cartItems && cartItems.reduce((acc, item) => acc + item.product.price * item.quantity, 0)
 
-  const deletehandle = (productId)=>{
-    dispatch(deleteCart({productId}))
+  const deletehandle = (productId) => {
+    dispatch(deleteCart({ productId }))
     toast.success('Item removed from cart')
   }
 
-const decreasequantity = (quantity, productId) => {
-    dispatch(updatingQt({
-        productId,
-        quantity: quantity - 1
-    }))
-}
+  const decreasequantity = (quantity, productId) => {
+    dispatch(updatingQt({ productId, quantity: quantity - 1 }))
+  }
 
-const increasequantity = (quantity, productId) => {
-    dispatch(updatingQt({
-        productId,
-        quantity: quantity + 1
-    }))
-}
+  const increasequantity = (quantity, productId) => {
+    dispatch(updatingQt({ productId, quantity: quantity + 1 }))
+  }
 
-const checkout = async ()=>{
-    const result = await dispatch(orderPlace())
-    if(!result.error){
-        toast.success('Order placed successfully!')
-        dispatch(clearCart())
-        setTimeout(() => navigate('/product/cart/checkout'), 1500)
-    } else {
-        toast.error('Failed to place order. Please try again.')
+  const checkout = async () => {
+    if (cartItems.length === 0) {
+      return toast.error('Nothing to dispatch. Add more items.')
     }
-}
-  
+    const result = await dispatch(orderPlace())
+    if (!result.error) {
+      toast.success('Order placed successfully!')
+      dispatch(clearCart())
+      setTimeout(() => navigate('/product/cart/checkout'), 1500)
+    } else {
+      toast.error('Failed to place order. Please try again.')
+    }
+  }
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-[1fr_300px] gap-6 p-4 sm:p-6">
       <Toaster position="top-right" />
@@ -60,7 +57,7 @@ const checkout = async ()=>{
         <div className="flex flex-col gap-2">
           {cartItems.map(item => (
             <div key={item._id} className="grid grid-cols-[72px_1fr_auto] gap-3 items-center bg-white border border-[#ede9e3] rounded-xl p-3 hover:border-[#1a1a2e]/30 transition-all">
-              
+
               {/* Image */}
               <div className="w-18 h-18 bg-[#f7f5f2] rounded-lg overflow-hidden">
                 <img
@@ -84,11 +81,11 @@ const checkout = async ()=>{
                   ₹{item.product.price.toLocaleString('en-IN')}
                 </span>
                 <div className="flex items-center gap-2 bg-gray-100 rounded-full px-3 py-1">
-                  <button disabled={item.quantity === 1} onClick={()=> decreasequantity(item.quantity,item.product._id)  } className="text-gray-500 hover:text-[#1a1a2e] text-sm">−</button>
+                  <button disabled={item.quantity === 1} onClick={() => decreasequantity(item.quantity, item.product._id)} className="text-gray-500 hover:text-[#1a1a2e] text-sm">−</button>
                   <span className="text-sm font-medium text-[#1a1a2e] min-w-3.5 text-center">{item.quantity}</span>
-                  <button onClick={()=> increasequantity(item.quantity,item.product._id)} className="text-gray-500 hover:text-[#1a1a2e] text-sm">+</button>
+                  <button onClick={() => increasequantity(item.quantity, item.product._id)} className="text-gray-500 hover:text-[#1a1a2e] text-sm">+</button>
                 </div>
-               <button onClick={()=> deletehandle(item.product._id)} className="text-gray-300 hover:text-red-500 transition-colors">
+                <button onClick={() => deletehandle(item.product._id)} className="text-gray-300 hover:text-red-500 transition-colors">
                   <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
                     <path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
@@ -99,6 +96,18 @@ const checkout = async ()=>{
             </div>
           ))}
         </div>
+
+        {/* Back to Home */}
+        <Link
+          to='/home'
+          className="inline-flex items-center gap-1.5 mt-4 text-sm font-medium text-[#1a1a2e]/60 hover:text-[#1a1a2e] transition-colors"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          Back to Home
+        </Link>
       </div>
 
       {/* Order Summary */}

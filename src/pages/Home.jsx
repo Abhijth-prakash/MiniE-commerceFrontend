@@ -1,14 +1,14 @@
-import React, { lazy, Suspense, useEffect,useRef, useState } from 'react'
+import React, { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getProducts, setFilter, setPage, setSort } from '../redux/slices/products'
 import Navbar from '../components/Navbar'
 import Pagination from '../components/Pagination'
-const ProductCard = lazy(()=> import('../components/ProductCard'))
 import { Link } from 'react-router-dom'
 import Loading from '../components/Loading'
 import Noproductfound from '../components/Noproductfound'
-const baseURL = import.meta.env.VITE_API_BASE
 import { Toaster } from 'react-hot-toast'
+const ProductCard = lazy(() => import('../components/ProductCard'))
+const baseURL = import.meta.env.VITE_API_BASE
 
 const Home = () => {
 

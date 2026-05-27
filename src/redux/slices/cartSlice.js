@@ -85,7 +85,7 @@ const cartSlice = createSlice({
     name:"cartSLice",
     initialState:{
         cartItems:[],
-        loading:false,
+        loading:true,
         error:null,
     },reducers:{
         clearCart:(state,action)=>{
