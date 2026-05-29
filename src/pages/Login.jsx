@@ -19,12 +19,21 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false)
 
   const datahandle = async (data) => {
-    const result = await dispatch(loginUser(data))
-    if (!result.error) {
-      await dispatch(userProfile())
-      await dispatch(getCart())
-      navigate('/home', { replace: true })
-    }
+   const result = await dispatch(loginUser(data))
+   console.log("LOGIN RESULT", result)
+
+if (!result.error) {
+  console.log("LOGIN SUCCESS")
+
+  const profile = await dispatch(userProfile())
+  console.log("PROFILE RESULT", profile)
+
+  const cart = await dispatch(getCart())
+  console.log("CART RESULT", cart)
+
+  console.log("NAVIGATING")
+  navigate('/home', { replace: true })
+}
   }
 
   return (
