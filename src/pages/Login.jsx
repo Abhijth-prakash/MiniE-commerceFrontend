@@ -20,18 +20,17 @@ const Login = () => {
 
   const datahandle = async (data) => {
    const result = await dispatch(loginUser(data))
-   console.log("LOGIN RESULT", result)
 
 if (!result.error) {
-  console.log("LOGIN SUCCESS")
+  alert("LOGIN SUCCESS")
 
   const profile = await dispatch(userProfile())
-  console.log("PROFILE RESULT", profile)
+  alert("PROFILE DONE")
 
   const cart = await dispatch(getCart())
-  console.log("CART RESULT", cart)
+  alert("CART DONE")
 
-  console.log("NAVIGATING")
+  alert("navigating")
   navigate('/home', { replace: true })
 }
   }
