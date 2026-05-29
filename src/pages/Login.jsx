@@ -29,7 +29,7 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#f7f5f2]">
-      <div className="bg-white border border-[#ede9e3] rounded-2xl shadow-sm w-full max-w-sm p-8">
+      <div className="bg-white border border-[#ede9e3] rounded-2xl shadow-sm w-full max-w-md lg:max-w-lg p-8">
 
         {/* Logo */}
         <div className="flex items-center justify-center gap-2 mb-8">
@@ -94,7 +94,9 @@ const Login = () => {
 
         <p className="text-sm text-center text-gray-400 mt-5">
           Don't have an account?{' '}
-          <Link to="/register" className="text-[#1a1a2e] font-semibold hover:underline">Register</Link>
+          <Link to="/register" className="text-[#1a1a2e] font-semibold hover:underline">
+            Register
+          </Link>
         </p>
       </div>
     </div>
