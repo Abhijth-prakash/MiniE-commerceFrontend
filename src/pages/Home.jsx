@@ -12,58 +12,52 @@ const baseURL = import.meta.env.VITE_API_BASE
 
 const Home = () => {
 
-    const {products, loading, error, page, pages,search,sort,filter} = useSelector(state => state.Products)
+    const {products, loading, error, page, pages, search, sort, filter} = useSelector(state => state.Products)
     const dispatch = useDispatch()
 
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            dispatch(
+                getProducts({
+                    page,
+                    limit: 6,
+                    search,
+                    filter,
+                    sort
+                })
+            )
+        }, 300)
 
-    //getting products on the inital render and when page limit search filter sort change
-useEffect(() => {
-    const timer = setTimeout(() => {
-        dispatch(
-            getProducts({
-                page,
-                limit: 6,
-                search,
-                filter,
-                sort
-            })
-        )
-
-    }, 300)
-
-    return () => clearTimeout(timer)
-
-}, [page, search, filter, sort])
-
-
-
+        return () => clearTimeout(timer)
+    }, [page, search, filter, sort])
 
     return (
-        <div className="min-h-screen bg-[#f7f5f2]">
-             <Toaster position="top-right" />
-         <Navbar></Navbar>
+        <div className="min-h-screen bg-[#f5f3ef] font-['Syne',sans-serif]">
+            <Toaster position="top-right" />
+            <Navbar />
 
-            {/* Filter chips + Sort — always mounted */}
-            <div className="bg-white px-6 py-3 flex items-center gap-2 border-b border-[#ede9e3] flex-wrap">
+            {/* Filter chips + Sort bar */}
+            <div className="bg-[#0e0e10] px-6 py-3 flex items-center gap-2 flex-wrap">
                 {["", "Electronics", "Clothing", "Shoes", "Books", "Furniture", "Toys"].map(cat => (
                     <button
                         key={cat}
                         onClick={() => dispatch(setFilter(cat))}
-                        className={`px-4 py-1.5 rounded-full text-xs border transition whitespace-nowrap font-medium
+                        className={`px-4 py-1.5 rounded-xl text-xs border transition-all whitespace-nowrap font-bold tracking-wide
                             ${filter === cat
-                                ? "bg-[#1a1a2e] text-[#ffd200] border-[#1a1a2e]"
-                                : "bg-white text-gray-500 border-gray-200 hover:border-[#1a1a2e] hover:text-[#1a1a2e]"
+                                ? "bg-[#c8f04b] text-[#0e0e10] border-[#c8f04b]"
+                                : "bg-white/5 text-white/50 border-white/10 hover:bg-white/10 hover:text-white hover:border-white/20"
                             }`}
                     >
                         {cat || "All"}
                     </button>
                 ))}
+
                 <div className="ml-auto flex items-center gap-2">
-                    <span className="text-xs text-gray-400">Sort</span>
+                    <span className="text-xs text-white/30 font-medium">Sort by</span>
                     <select
                         value={sort}
                         onChange={(e) => dispatch(setSort(e.target.value))}
-                        className="border border-gray-200 rounded-full px-3 py-1.5 text-xs outline-none bg-white"
+                        className="bg-white/5 border border-white/10 text-white/60 rounded-xl px-3 py-1.5 text-xs outline-none hover:border-[#c8f04b]/40 hover:text-white transition-all cursor-pointer"
                     >
                         <option value="">Relevance</option>
                         <option value="low">Price ↑</option>
@@ -72,22 +66,19 @@ useEffect(() => {
                 </div>
             </div>
 
-            {/* Loading / Grid */}
-       {loading ? (
-        <>
-        <Loading></Loading>
-        </>
-) : products.length === 0 ? (
-        <>
-        <Noproductfound></Noproductfound>
-        </>
-) : (
-    <>      <Suspense fallback={<Loading></Loading>}>
-            <ProductCard></ProductCard>
-            </Suspense>
-            <Pagination></Pagination>
-    </>
-)}
+            {/* Loading / Grid / Empty */}
+            {loading ? (
+                <Loading />
+            ) : products.length === 0 ? (
+                <Noproductfound />
+            ) : (
+                <>
+                    <Suspense fallback={<Loading />}>
+                        <ProductCard />
+                    </Suspense>
+                    <Pagination />
+                </>
+            )}
         </div>
     )
 }
