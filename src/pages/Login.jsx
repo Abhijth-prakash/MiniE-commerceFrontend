@@ -22,15 +22,11 @@ const Login = () => {
    const result = await dispatch(loginUser(data))
 
 if (!result.error) {
-  alert("LOGIN SUCCESS")
 
   const profile = await dispatch(userProfile())
-  alert("PROFILE DONE")
 
   const cart = await dispatch(getCart())
-  alert("CART DONE")
 
-  alert("navigating")
   navigate('/home', { replace: true })
 }
   }
