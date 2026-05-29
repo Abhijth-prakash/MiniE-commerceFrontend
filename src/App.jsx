@@ -16,6 +16,7 @@ import ErrorBoundary from './ErrorBoundary/Errorboundary'
 
 import { userProfile } from './redux/slices/userSlice'
 import { getProducts } from './redux/slices/products'
+import { getCart } from './redux/slices/cartSlice'
 
 const Cart = lazy(() => import('./pages/Cart'))
 
@@ -24,6 +25,7 @@ function App() {
 
 useEffect(() => {
   dispatch(userProfile())
+  dispatch(getCart())
 }, [dispatch])
   return (
     <ErrorBoundary>
