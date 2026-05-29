@@ -34,11 +34,9 @@ useEffect(() => {
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Registration />} />
 
-          <Route element={<ProtectedRoutes />}>
             <Route path="/home" element={<Home />} />
             <Route path="/product/cart" element={<Cart />} />
             <Route path="/product/cart/checkout" element={<Checkout />} />
-          </Route>
 
           <Route element={<AdminRoutes />}>
             <Route path="/product/add" element={<AddProduct />} />
