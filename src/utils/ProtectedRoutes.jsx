@@ -11,7 +11,7 @@ const ProtectedRoutes = () => {
   }
 
   if (!user) {
-    return <Navigate to="/" replace />
+      return <h1>No User</h1>
   }
 
   return <Outlet />
