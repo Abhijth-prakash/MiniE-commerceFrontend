@@ -24,7 +24,9 @@ useEffect(() => {
         defaultValues: {
         name: "",
         price: "",
-        category: ""
+        category: "",
+        description: "",
+        rating:""
 }
     })
 
@@ -34,6 +36,8 @@ useEffect(() => {
             name: product.name,
             price: product.price,
             category: product.category,
+            description: product.description?product.description:"",
+            rating: product.rating ?? "",
             image: undefined
         })
     }
@@ -52,6 +56,8 @@ const dataHandle = async (data) => {
     formData.append('name', data.name)
     formData.append('price', data.price)
     formData.append('category', data.category)
+    formData.append('description', data.description)
+    formData.append('rating', data.rating)
     if (data.image && data.image[0]) {
         formData.append('image', data.image[0])
     }
@@ -117,6 +123,56 @@ const dataHandle = async (data) => {
                             </select>
                             {errors.category && <p className="text-red-400 text-xs">{errors.category.message}</p>}
                         </div>
+
+
+                       {/* description */}
+<div className="flex flex-col gap-1">
+    <label className="text-xs font-medium text-[#1a1a2e] uppercase tracking-wide">
+        Description
+    </label>
+
+    <textarea
+        {...register("description")}
+        rows={4}
+        placeholder="Enter product description..."
+        className="border border-[#ede9e3] rounded-lg px-4 py-2.5 text-sm text-[#1a1a2e] outline-none focus:border-[#1a1a2e] transition placeholder-gray-300 resize-none"
+    />
+
+    {errors.description && (
+        <p className="text-red-400 text-xs">
+            {errors.description.message}
+        </p>
+    )}
+</div>
+
+
+                       {/* rating */}
+<div className="flex flex-col gap-1">
+    <label className="text-xs font-medium text-[#1a1a2e] uppercase tracking-wide">
+        Rating
+    </label>
+
+    <input
+        type="number"
+        step="0.1"
+        min="1"
+        max="5"
+        {...register("rating")}
+        placeholder="e.g. 4.5"
+        className="border border-[#ede9e3] rounded-lg px-4 py-2.5 text-sm text-[#1a1a2e] outline-none focus:border-[#1a1a2e] transition placeholder-gray-300"
+    />
+
+    {errors.rating && (
+        <p className="text-red-400 text-xs">
+            {errors.rating.message}
+        </p>
+    )}
+</div>
+
+
+
+
+
 
                         {/* Image */}
                         <div className="flex flex-col gap-1">
