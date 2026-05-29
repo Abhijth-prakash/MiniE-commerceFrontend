@@ -52,18 +52,18 @@ const Home = () => {
                     </button>
                 ))}
 
-                <div className="ml-auto flex items-center gap-2">
-                    <span className="text-xs text-white/30 font-medium">Sort by</span>
-                    <select
-                        value={sort}
-                        onChange={(e) => dispatch(setSort(e.target.value))}
-                        className="bg-white/5 border border-white/10 text-white/60 rounded-xl px-3 py-1.5 text-xs outline-none hover:border-[#c8f04b]/40 hover:text-white transition-all cursor-pointer"
-                    >
-                        <option value="">Relevance</option>
-                        <option value="low">Price ↑</option>
-                        <option value="high">Price ↓</option>
-                    </select>
-                </div>
+<div className="ml-auto flex items-center gap-2">
+    <span className="text-xs text-[#0e0e10]/50 font-medium">Sort by</span>
+    <select
+        value={sort}
+        onChange={(e) => dispatch(setSort(e.target.value))}
+        className="bg-[#0e0e10] border border-white/10 text-white/60 rounded-xl px-3 py-1.5 text-xs outline-none hover:border-[#c8f04b]/40 hover:text-white transition-all cursor-pointer"
+    >
+        <option value="" className="bg-[#0e0e10] text-white/70">Relevance</option>
+        <option value="low" className="bg-[#0e0e10] text-white/70">Price ↑</option>
+        <option value="high" className="bg-[#0e0e10] text-white/70">Price ↓</option>
+    </select>
+</div>
             </div>
 
             {/* Loading / Grid / Empty */}
