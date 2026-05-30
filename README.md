@@ -1,16 +1,103 @@
-# React + Vite
+# UrbanNest Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+UrbanNest is a modern e-commerce frontend built with React, focusing on performance, scalability, and user experience. The application provides product browsing, authentication interfaces, cart management, pagination, product ratings, and responsive UI components while following modern frontend development practices.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### User Features
 
-## React Compiler
+- User Registration & Login
+- Product Listing
+- Product Search
+- search with debouncing
+- Product Filtering & Sorting
+- Product Ratings Display
+- Shopping Cart Management
+- Checkout Interface
+- Pagination for Product Browsing
+- Responsive Design
+- Protected Routes
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Performance & Optimization
 
-## Expanding the ESLint configuration
+- Lazy Loading using React Lazy and Suspense
+- Code Splitting
+- Optimized Component Rendering
+- Error Boundaries for Graceful Error Handling
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Form Handling & Validation
+
+- React Hook Form
+- Zod Schema Validation
+- Real-time Form Validation
+- User-friendly Error Messages
+
+### State Management
+
+- Redux Toolkit
+- Async Operations using createAsyncThunk
+- Centralized State Management
+- Loading and Error States
+
+## Tech Stack
+
+- React.js
+- React Router DOM
+- Redux Toolkit
+- Redux Async Thunks (createAsyncThunk)
+- React Hook Form
+- Zod
+- Axios
+- Tailwind CSS
+- Vite
+
+```
+
+## Key Concepts Implemented
+
+### Redux Async Thunks
+
+The application uses Redux Toolkit's `createAsyncThunk` to handle asynchronous operations efficiently with built-in loading, success, and error states.
+
+### Form Validation with Zod
+
+Form validation is implemented using Zod schemas integrated with React Hook Form to provide scalable and type-safe validation.
+
+### Lazy Loading
+
+Pages are loaded only when required using React Lazy and Suspense, reducing the initial bundle size and improving performance.
+
+### Error Boundaries
+
+Custom Error Boundaries are used to catch runtime errors and prevent the entire application from crashing.
+
+### Pagination
+
+Pagination is implemented to efficiently manage large product collections and improve user experience by loading products page by page.
+
+### Product Ratings
+
+Products display ratings to help users evaluate items and make informed purchasing decisions.
+
+### Protected Routes
+
+Protected Routes ensure that authenticated users can access authorized sections of the application.
+
+## Responsive Design
+
+The application is optimized for:
+
+- Mobile Devices
+- Tablets
+- Laptops
+- Desktop Screens
+
+## Future Improvements
+
+- Wishlist Functionality
+- Product Reviews
+- Dark Mode
+- Advanced Filtering
+- Enhanced Accessibility
+- Product Recommendations
+
